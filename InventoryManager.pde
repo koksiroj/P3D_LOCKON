@@ -51,7 +51,7 @@ class InventoryManager {
       new CharacterAspect[]{CharacterAspect.NAKED}
       );
 
-    //TODO: Add all the dialogue options
+    //TODO: Add all the dialogue options, add more character types
   }
 
   void SetAvailableDialogue() {
