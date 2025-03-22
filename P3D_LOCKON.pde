@@ -9,9 +9,8 @@ float addAngle;
 PShape TestBox;
 PImage TestBoxTxtr;
 
-float baseSize = 5000;
-float maxSize = 6000;
-float heightOffset = 1;
+float baseSize = 3000;
+float maxSize = 4000;
 
 float[] highlightIntensity = {0, 0, 0, 0}; 
 
@@ -89,6 +88,7 @@ void drawCharacters() {
     translate(positions[i][0], centerY, positions[i][1]);
 
     float scaleFactor = baseSize + (highlightIntensity[i] * (maxSize - baseSize)); // Scale from 30 to 50
+    float heightOffset = (scaleFactor - baseSize) / 500000; // Adjust for base scaling
 
     // Move down before scaling, then back up
     translate(0, heightOffset, 0);
