@@ -49,7 +49,7 @@ class RoundManager {
 
     if (!affected) {
       ActiveCharacters[CurrentCharacter].Affection += pDialogue.NeutralEffect;
-      println("not affected, affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
+      //println("not affected, affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
     }
 
     ProgressTurn();

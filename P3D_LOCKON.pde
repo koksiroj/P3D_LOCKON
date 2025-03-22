@@ -30,7 +30,6 @@ void setup() {
 }
 
 void draw() {
-  println("zoom: "+roundManager.Zoom);
   background(0xFFB0D8);
   roundDisplay();
 
@@ -64,7 +63,7 @@ void mousePressed() {
   for (int i = 0; i < 5; i++) {
     if (buttons[i].isClicked(mouseX, mouseY)) {
       clickedButton = true;
-      println("Selected Dialogue: " + inventory.getDialogueType(i));
+      //println("Selected Dialogue: " + inventory.getDialogueType(i));
       roundManager.PickDialogue(inventory.AvailableDialogue[i]);
     }
   }

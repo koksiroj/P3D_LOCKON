@@ -21,9 +21,8 @@ class Character {
     CharacterModel = loadShape(pModelName);
     CharacterModel.rotateZ(PI);
     Aspects = pAspects;
-    for(int i = 0; i< Aspects.length; i++){
-      
-    println("Char["+pModelName+"] has Aspect: "+Aspects[i]);
+    for(int i = 0; i< Aspects.length; i++){      
+    //println("Char["+pModelName+"] has Aspect: "+Aspects[i]);
     }
   }
 
