@@ -1,5 +1,5 @@
 enum DialogueType {
-  BOAST-WEALTH, BOAST-APPEARANCE, COMPLIMENT-FASHION, 
+  BOAST_WEALTH, BOAST_APPEARANCE, COMPLIMENT_FASHION
 };
 
 class Dialogue {
@@ -13,28 +13,25 @@ class Dialogue {
   CharacterAspect[] Aspects; //All Character Aspects that are not neutral to this dialogue;
   int[] EffectValues;
 
-  //Overload for aspects just using default effect values
+  Boolean IsBallsy = false;
+
+  //Overloads for aspects just using default effect values
   Dialogue(DialogueType pType, CharacterAspect[] pLiked, CharacterAspect[] pDisliked) {
-
-    Type = pType;
-
-    Aspects = new CharacterAspect[pLiked.length + pDisliked.length];
-    EffectValues = new int[Aspects.length];
-
-    for (int i = 0; i < pLiked.length; i++) {
-      Aspects[i] = pLiked[i];
-      EffectValues[i] = GoodEffect;
-    }
-
-    for (int i = 0; i < pDisliked.length; i++) {
-      Aspects[i+pLiked.length] = pDisliked[i]; //Disliked aspects index is offset by the length of the liked ones
-      EffectValues[i+pLiked.length] = BadEffect;
-    }
+    Init(pType, false, GoodEffect, NeutralEffect, BadEffect, pLiked, pDisliked);
   }
 
-  Dialogue(DialogueType pType, int pGoodEffect, int pNeutralEffect, int pBadEffect, CharacterAspect[] pLiked, CharacterAspect[] pDisliked) {
-    
+  Dialogue(DialogueType pType, Boolean pIsBallsy, CharacterAspect[] pLiked, CharacterAspect[] pDisliked) {
+    Init(pType, pIsBallsy, GoodEffect, NeutralEffect, BadEffect, pLiked, pDisliked);
+  }
+
+  Dialogue(DialogueType pType, Boolean pIsBallsy, int pGoodEffect, int pNeutralEffect, int pBadEffect, CharacterAspect[] pLiked, CharacterAspect[] pDisliked) {
+    Init(pType, pIsBallsy, pGoodEffect, pNeutralEffect, pBadEffect, pLiked, pDisliked);
+  }
+
+  void Init(DialogueType pType, Boolean pIsBallsy, int pGoodEffect, int pNeutralEffect, int pBadEffect, CharacterAspect[] pLiked, CharacterAspect[] pDisliked) {
     Type = pType;
+    IsBallsy = pIsBallsy;
+
     GoodEffect = pGoodEffect;
     NeutralEffect = pNeutralEffect;
     BadEffect = pBadEffect;
@@ -48,7 +45,7 @@ class Dialogue {
     }
 
     for (int i = 0; i < pDisliked.length; i++) {
-      Aspects[i+pLiked.length] = pDisliked[i];
+      Aspects[i+pLiked.length] = pDisliked[i]; //Disliked aspects index is offset by the length of the liked ones
       EffectValues[i] = BadEffect;
     }
   }
