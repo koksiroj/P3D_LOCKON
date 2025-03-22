@@ -7,16 +7,19 @@ float radius = 100;
 float addAngle;
 
 PShape TestBox;
-float baseSize = 30;
-float maxSize = 60;
-float objHeight = baseSize;
+PImage TestBoxTxtr;
+
+float baseSize = 5000;
+float maxSize = 6000;
+float heightOffset = 1;
 
 float[] highlightIntensity = {0, 0, 0, 0}; 
 
 void setup() {
   size(1280, 720, P3D);
-  TestBox = loadShape("testbox.obj");
-  TestBox.setFill(#888888);
+  TestBox = loadShape("CCube.obj");
+  //TestBoxTxtr = loadImage("texture/CCubeTxtr.jpg");
+  //TestBox.setTexture(TestBoxTxtr);
   //TestBox.setSpecular(0xfffff7d5);
    centerX = width / 2;
    centerY = height / 2;
@@ -86,7 +89,6 @@ void drawCharacters() {
     translate(positions[i][0], centerY, positions[i][1]);
 
     float scaleFactor = baseSize + (highlightIntensity[i] * (maxSize - baseSize)); // Scale from 30 to 50
-    float heightOffset = (scaleFactor - baseSize) / 100; // Adjust for base scaling
 
     // Move down before scaling, then back up
     translate(0, heightOffset, 0);
