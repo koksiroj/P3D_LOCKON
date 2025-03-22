@@ -79,7 +79,7 @@ class RoundManager {
   }
 
   void DrawCharacters() {
-
+    hint(ENABLE_DEPTH_TEST);
     float[][] positions = new float[4][2]; // Store (X, Z) coordinates
 
     // Calculate object positions
@@ -132,5 +132,6 @@ class RoundManager {
       popMatrix();
       ActiveCharacters[i].CharacterModel.rotateY(.01);
     }
+    hint(DISABLE_DEPTH_TEST);
   }
 }

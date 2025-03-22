@@ -1,7 +1,8 @@
 int turn = 1;
 float angle;
 float centerX, centerY;
-float speed = 0.05;
+boolean zoom = false;
+
 float radius = 100;
 float addAngle;
 
@@ -37,7 +38,11 @@ void draw() {
   background(0xFFB0D8);
   roundDisplay();
   if (addAngle > 0) {
-    angle += PI*0.5/90;
+    if (zoom) {
+      angle += HALF_PI*5/60;
+    } else {
+      angle += HALF_PI/90;
+    }
     addAngle -= 1;
   }
 
@@ -47,16 +52,33 @@ void draw() {
 
   inventoryDisplay();
   statsDisplay();
+
+  if (zoom) {
+    pushMatrix();
+    int oX = 100;
+    String roundT = "Round " + roundManager.RoundCount + "!";
+    fill(#FC1F88);
+    stroke(#E21380);
+    strokeWeight(4);
+    rect(width/2 - oX, height/2, 0, 8);
+
+    textSize(64);
+    noStroke();
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(roundT, width/2, height/2 + 10);
+    popMatrix();
+  }
 }
 
 void turnChange() {
   addAngle = 90;
+  zoom = false;
 }
 
 void roundChange() {
-}
-
-void mouseClicked() {
+  addAngle = 60;
+  zoom = true;
 }
 
 void mousePressed() {
@@ -73,6 +95,7 @@ void mousePressed() {
       turnChange();
     } else {
       roundManager.NextRound();
+      roundChange();
       turn = 1;
     }
   }
@@ -80,7 +103,7 @@ void mousePressed() {
 
 void roundDisplay() {
   pushMatrix();
-  String roundS = "Round:" + roundManager.RoundCount;
+  String roundS = "Round: " + roundManager.RoundCount;
   textSize(50);
   fill(255);
   text(roundS, 100, 40);
