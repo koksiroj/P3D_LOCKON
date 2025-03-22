@@ -1,10 +1,5 @@
-int turn = 1;
-float angle;
 float centerX, centerY;
-boolean zoom = false;
-
 float radius = 100;
-float addAngle;
 
 PShape TestBox;
 PImage TestBoxTxtr;
@@ -35,16 +30,9 @@ void setup() {
 }
 
 void draw() {
+  println("zoom: "+roundManager.Zoom);
   background(0xFFB0D8);
   roundDisplay();
-  if (addAngle > 0) {
-    if (zoom) {
-      angle += HALF_PI*5/60;
-    } else {
-      angle += HALF_PI/90;
-    }
-    addAngle -= 1;
-  }
 
   lights();
 
@@ -53,7 +41,7 @@ void draw() {
   inventoryDisplay();
   statsDisplay();
 
-  if (zoom) {
+  if (roundManager.Zoom) {
     pushMatrix();
     int oX = 100;
     String roundT = "Round " + roundManager.RoundCount + "!";
@@ -71,33 +59,17 @@ void draw() {
   }
 }
 
-void turnChange() {
-  addAngle = 90;
-  zoom = false;
-}
-
-void roundChange() {
-  addAngle = 60;
-  zoom = true;
-}
-
 void mousePressed() {
   boolean clickedButton = false;
   for (int i = 0; i < 5; i++) {
     if (buttons[i].isClicked(mouseX, mouseY)) {
       clickedButton = true;
       println("Selected Dialogue: " + inventory.getDialogueType(i));
+      roundManager.PickDialogue(inventory.AvailableDialogue[i]);
     }
   }
-  if (!clickedButton && addAngle <= 0) {
-    if (turn < 4) {
-      turn++;
-      turnChange();
-    } else {
-      roundManager.NextRound();
-      roundChange();
-      turn = 1;
-    }
+  if (!clickedButton && roundManager.AddAngle <= 0) {
+    roundManager.ProgressTurn();
   }
 }
 
@@ -135,6 +107,7 @@ void statsDisplay() {
       fill(#C681B7);
     } else {
       fill(#EDA6D0);
+      //d
     }
     if (i < currentAffection) {
       fill(#FC1F88);
