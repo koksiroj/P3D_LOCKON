@@ -33,6 +33,7 @@ void draw() {
 
   translate(0.0, -1.7, 3.2);
   rotateY(radians(millis()/50));
+  scale(1f/30f);
   shape(modelAbs, 0, 0);
 }
 
