@@ -67,7 +67,7 @@ class RoundManager {
     CharacterPool = new Character[2];
 
     CharacterPool[0] = new Character("MermanLowP.obj", new CharacterAspect[] {CharacterAspect.SHY});
-    CharacterPool[1] = new Character("ShrromGirlMTLsetUp.obj", new CharacterAspect[] {CharacterAspect.NAKED});
+    CharacterPool[1] = new Character("ShrromGirl.obj", new CharacterAspect[] {CharacterAspect.NAKED});
   }
 
   void SetActiveCharacters() {
