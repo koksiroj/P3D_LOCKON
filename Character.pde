@@ -1,5 +1,5 @@
 enum CharacterAspect {
-  SHY, NAKED
+  NULL, SHY, NAKED, POSH, FIT
 };
 
 class Character {

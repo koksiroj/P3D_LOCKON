@@ -50,22 +50,22 @@ class InventoryManager {
     //Disliked CharacterAspects
 
 
-    DialoguePool[0] = new Dialogue(DialogueType.COMPLIMENT,
-      new CharacterAspect[]{CharacterAspect.SHY},
+    DialoguePool[0] = new Dialogue(DialogueType.BOAST-WEALTH,
+      new CharacterAspect[]{CharacterAspect.POSH},
+      new CharacterAspect[]{CharacterAspect.NULL}
+      );
+
+    DialoguePool[1] = new Dialogue(DialogueType.BOAST-APPEARANCE,
+      new CharacterAspect[]{CharacterAspect.FIT, CharacterAspect.FASHIONABLE},
       new CharacterAspect[]{CharacterAspect.NAKED}
       );
 
-    DialoguePool[1] = new Dialogue(DialogueType.FASHION,
-      new CharacterAspect[]{CharacterAspect.SHY},
+    DialoguePool[2] = new Dialogue(DialogueType.COMPLIMENT-FASHION,
+      new CharacterAspect[]{CharacterAspect.FASHIONABLE},
       new CharacterAspect[]{CharacterAspect.NAKED}
       );
 
-    DialoguePool[2] = new Dialogue(DialogueType.PERSONALITY,
-      new CharacterAspect[]{CharacterAspect.SHY},
-      new CharacterAspect[]{CharacterAspect.NAKED}
-      );
-
-    DialoguePool[3] = new Dialogue(DialogueType.APPEARANCE,
+    DialoguePool[3] = new Dialogue(DialogueType.COMPLIMENT-PERSONALITY,
       new CharacterAspect[]{CharacterAspect.SHY},
       new CharacterAspect[]{CharacterAspect.NAKED}
       );
