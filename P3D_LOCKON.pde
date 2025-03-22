@@ -1,4 +1,3 @@
-int round = 1;
 int turn = 1;
 float angle;
 float centerX, centerY;
@@ -15,19 +14,20 @@ float maxSize = 0.9;
 
 float[] highlightIntensity = {0, 0, 0, 0};
 
+RoundManager roundManager;
 InventoryManager inventory;
 Button[] buttons = new Button[5];
 
 void setup() {
-  size(1280, 720, P3D);
-  TestBox = loadShape("MermanLowP.obj");
-  TestBox.rotateZ(PI);
+  size(800, 800, P3D);
 
   CirceBold = createFont("CirceRounded-Bold.otf", 64);
   textFont(CirceBold);
 
   centerX = width / 2;
   centerY = height / 2;
+
+  roundManager =  new RoundManager();
 
   inventory = new InventoryManager();
   inventory.NewRound();
@@ -43,8 +43,7 @@ void draw() {
 
   lights();
 
-  drawCharacters();
-  TestBox.rotateY(.01);
+  roundManager.DrawCharacters();
 
   inventoryDisplay();
   statsDisplay();
@@ -57,84 +56,34 @@ void turnChange() {
 void roundChange() {
 }
 
-void drawCharacters() {
-  float[][] positions = new float[4][2]; // Store (X, Z) coordinates
-
-  // Calculate object positions
-  for (int i = 0; i < 4; i++) {
-    float objAngle = angle + i * HALF_PI;
-    positions[i][0] = centerX + cos(objAngle) * radius; // X coordinate
-    positions[i][1] = centerY + sin(objAngle) * radius; // Z coordinate
-  }
-
-  // Find the closest object (smallest Z value)
-  int closestIndex = 0;
-  float minZ = positions[0][1];
-
-  for (int i = 1; i < 4; i++) {
-    if (positions[i][1] > minZ) { // Smaller Z means closer to the camera //Swapped the '<' for a '>'
-      minZ = positions[i][1];
-      closestIndex = i;
-    }
-  }
-
-  // Gradually adjust highlight intensity
-  for (int i = 0; i < 4; i++) {
-    if (i == closestIndex) {
-      highlightIntensity[i] = lerp(highlightIntensity[i], 1, 0.1); // Increase highlight smoothly
-    } else {
-      highlightIntensity[i] = lerp(highlightIntensity[i], 0, 0.1); // Decrease smoothly
-    }
-  }
-
-  // Draw objects with smooth effects
-  color[] colors = {#ff0000, #00ff00, #0000ff, #ff00ff};
-
-  for (int i = 0; i < 4; i++) {
-    pushMatrix();
-    translate(positions[i][0], centerY + 100, positions[i][1]);
-
-    float scaleFactor = baseSize + (highlightIntensity[i] * (maxSize - baseSize)); // Scale from 30 to 50
-    float heightOffset = (scaleFactor - baseSize) / 2; // Adjust for base scaling
-
-    // Move down before scaling, then back up
-    translate(0, heightOffset, 0);
-    scale(scaleFactor); // Normalize scaling factor
-    translate(0, -heightOffset, 0);
-
-    // Interpolate between normal color and white
-    color blendedColor = lerpColor(colors[i], #FFFFFF, highlightIntensity[i]);
-    TestBox.setFill(blendedColor);
-
-    shape(TestBox, 0, 0);
-    popMatrix();
-  }
-}
-
 void mouseClicked() {
-  if (turn < 4) {
-    turnChange();
-  } else {
-    round += 1;
-    roundChange();
-    turn = 1;
-  }
 }
 
 void mousePressed() {
+  boolean clickedButton = false;
   for (int i = 0; i < 5; i++) {
     if (buttons[i].isClicked(mouseX, mouseY)) {
+      clickedButton = true;
       println("Selected Dialogue: " + inventory.getDialogueType(i));
+    }
+  }
+  if (!clickedButton && addAngle <= 0) {
+    if (turn < 4) {
+      turn++;
+      turnChange();
+    } else {
+      roundManager.NextRound();
+      turn = 1;
     }
   }
 }
 
 void roundDisplay() {
   pushMatrix();
-  String roundS = "Round:" + round;
-  textSize(64);
+  String roundS = "Round:" + roundManager.RoundCount;
+  textSize(50);
   fill(255);
-  text(roundS, 20, 40);
+  text(roundS, 100, 40);
   popMatrix();
 }
 
@@ -152,19 +101,19 @@ void statsDisplay() {
   pushMatrix();
   int affectionC = 5;
   int trustC = 3;
-  int currentAffection = 2;
+  int currentAffection = roundManager.GetCurrentCharacter().Affection;
   translate(width/2 - 100*(affectionC + trustC)/2, height*0.865);
-  
+
   for (int i = 0; i < affectionC + trustC; i++) {
     smooth();
     noStroke();
-    
-    if(i < trustC){
+
+    if (i < trustC) {
       fill(#C681B7);
-    }else{
+    } else {
       fill(#EDA6D0);
     }
-    if(i < currentAffection){
+    if (i < currentAffection) {
       fill(#FC1F88);
     }
     pushMatrix();
