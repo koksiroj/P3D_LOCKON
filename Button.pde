@@ -9,11 +9,17 @@ class Button {
   }
 
   void display(String label) {
-    fill(200);
-    rect(x, y, w, h);
+    pushMatrix();
+    textSize(16);
+    fill(#F5EBFF);
+    stroke(#E3D4F9);
+    strokeWeight(2);
+    rect(x, y, w, h, 8);
     fill(0);
+    noStroke();
     textAlign(CENTER, CENTER);
     text(label, x + w / 2, y + h / 2);
+    popMatrix();
   }
 
   boolean isClicked(float mx, float my) {

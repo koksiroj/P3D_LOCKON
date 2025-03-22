@@ -59,7 +59,7 @@ class InventoryManager {
   void SetAvailableDialogue() {
     for (int i = 0; i < InventorySize; i++) {
       int randomIndex = int(random(DialoguePool.length));
-      if (DialoguePool[randomIndex] != null) { // ✅ Check that the dialogue exists before assigning
+      if (DialoguePool[randomIndex] != null) {
         AvailableDialogue[i] = DialoguePool[randomIndex];
       } else {
         AvailableDialogue[i] = new Dialogue(DialogueType.COMMENT, new CharacterAspect[]{}, new CharacterAspect[]{}); // ✅ Fallback dialogue
@@ -70,9 +70,9 @@ class InventoryManager {
   String getDialogueType(int index) {
   if (AvailableDialogue != null && index >= 0 && index < AvailableDialogue.length) {
     if (AvailableDialogue[index] != null) {
-      return AvailableDialogue[index].Type.name(); // ✅ Safe access
+      return AvailableDialogue[index].Type.name();
     }
   }
-  return "Unknown"; // ✅ Safe fallback
+  return "Unknown";
 }
 }
