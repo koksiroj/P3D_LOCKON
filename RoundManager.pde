@@ -5,8 +5,14 @@ class RoundManager {
   Character[] ActiveCharacters;
 
   int RoundCount = 1;
+  int TurnCount = 1;
   int CurrentCharacter = 0;
   int ActiveCharacterCount = 4;
+
+  float Angle;
+  float AddAngle;
+
+  boolean Zoom = false;
 
   RoundManager() {
 
@@ -16,6 +22,7 @@ class RoundManager {
 
   void NewGame() {
     RoundCount = 1;
+    TurnCount = 1;
     CurrentCharacter = 0;
 
     for (int i = 0; i < CharacterPool.length; i++) {
@@ -30,44 +37,61 @@ class RoundManager {
 
     boolean affected = false;
 
+    println("Affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
+
     for (int i = 0; i < pDialogue.Aspects.length; i++) {
       if (ActiveCharacters[CurrentCharacter].HasAspect(pDialogue.Aspects[i])) {
+        ActiveCharacters[CurrentCharacter].Affection += pDialogue.EffectValues[i];
+        affected = true;
+        println("got affected by: "+ pDialogue.Aspects[i] +", affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
       }
-      ActiveCharacters[CurrentCharacter].Affection += pDialogue.EffectValues[i];
-      affected =true;
     }
 
-    if (!affected)
+    if (!affected) {
       ActiveCharacters[CurrentCharacter].Affection += pDialogue.NeutralEffect;
+      println("not affected, affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
+    }
 
-    ProgressCharacter();
+    ProgressTurn();
   }
 
   Character GetCurrentCharacter() {
     return  ActiveCharacters[CurrentCharacter];
   }
 
-  void ProgressCharacter() {
+  void ProgressTurn() {
 
-    if (CurrentCharacter >= ActiveCharacters.length)
+    if (TurnCount >= ActiveCharacters.length) {
       NextRound();
-    else
+    } else {
       CurrentCharacter++;
+      TurnCount++;
+      AddAngle = 90;
+      Zoom = false;
+    }
+
+    println("Turn:" + TurnCount);
   }
 
   void NextRound() {
     RoundCount++;
     CurrentCharacter = 0;
-     println("Round:" + RoundCount);
+    TurnCount = 1;
+    AddAngle = 60;
+    Zoom = true;
+    println("Round:" + RoundCount);
     //TODO: ProgressRound
   }
 
   void SetAllCharacters() {
 
-    CharacterPool = new Character[2];
+    CharacterPool = new Character[5];
 
     CharacterPool[0] = new Character("MermanLowP.obj", new CharacterAspect[] {CharacterAspect.SHY});
     CharacterPool[1] = new Character("ShrromGirl.obj", new CharacterAspect[] {CharacterAspect.NAKED});
+    CharacterPool[2] = new Character("models/rockhard-abs/rockhard-abs.obj", new CharacterAspect[] {CharacterAspect.NAKED});
+    CharacterPool[3] = new Character("models/laika/laika.obj", new CharacterAspect[] {CharacterAspect.NAKED});
+    CharacterPool[4] = new Character("CCubeBig.obj", new CharacterAspect[] {CharacterAspect.NAKED});
   }
 
   void SetActiveCharacters() {
@@ -80,11 +104,21 @@ class RoundManager {
 
   void DrawCharacters() {
     hint(ENABLE_DEPTH_TEST);
+    if (AddAngle > 0) {
+      if (roundManager.Zoom) {
+        Angle += HALF_PI*5/60;
+        println("called");
+      } else {
+        Angle += HALF_PI/90;
+      }
+      AddAngle -= 1;
+    }
+
     float[][] positions = new float[4][2]; // Store (X, Z) coordinates
 
     // Calculate object positions
     for (int i = 0; i < ActiveCharacterCount; i++) {
-      float objAngle = angle + i * HALF_PI;
+      float objAngle = Angle + i * HALF_PI;
       positions[i][0] = centerX + cos(objAngle) * radius; // X coordinate
       positions[i][1] = centerY + sin(objAngle) * radius; // Z coordinate
     }
@@ -116,7 +150,7 @@ class RoundManager {
       pushMatrix();
       translate(positions[i][0], centerY + 50, positions[i][1]);
 
-      float scaleFactor = baseSize + (highlightIntensity[i] * (maxSize - baseSize)); // Scale from 30 to 50
+      float scaleFactor = 1;// = baseSize + (highlightIntensity[i] * (maxSize - baseSize)); // Scale from 30 to 50
       float heightOffset = (scaleFactor - baseSize) / 2; // Adjust for base scaling
 
       // Move down before scaling, then back up

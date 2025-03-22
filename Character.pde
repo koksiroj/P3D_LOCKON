@@ -21,6 +21,10 @@ class Character {
     CharacterModel = loadShape(pModelName);
     CharacterModel.rotateZ(PI);
     Aspects = pAspects;
+    for(int i = 0; i< Aspects.length; i++){
+      
+    println("Char["+pModelName+"] has Aspect: "+Aspects[i]);
+    }
   }
 
   Character(String pModelName, CharacterAspect[] pAspects, int pTrust, int pPatience, int pAffection) {
@@ -40,7 +44,9 @@ class Character {
 
     for (int i = 0; i < Aspects.length; i++ ) {
       if (Aspects[i] == pAspect)
+      {
         return true;
+      }
     }
 
     return false;
