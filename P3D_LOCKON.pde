@@ -1,13 +1,17 @@
 // GAMERS
 import processing.sound.*;
 
-PShape modelLaika;
+//PShape modelLaika;
+PShape modelAbs;
+
 SoundFile sfxTestSound1;
 
 void setup() {
   size(400, 400, P3D);
 
-  modelLaika = loadShape("models/laika/laika.obj");
+  //modelLaika = loadShape("models/laika/laika.obj");
+  modelAbs = loadShape("models/rockhard-abs/rockhard-abs.obj");
+
   sfxTestSound1 = new SoundFile(this, "sfx/test_sound1.wav");
 }
 
@@ -27,8 +31,9 @@ void draw() {
   lights();
   setupCamera();
 
-  rotateY(radians(millis()/2));
-  shape(modelLaika, 0, 0);
+  translate(0.0, -1.7, 3.2);
+  rotateY(radians(millis()/50));
+  shape(modelAbs, 0, 0);
 }
 
 void mousePressed() {

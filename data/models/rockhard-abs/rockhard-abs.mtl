@@ -1,0 +1,31 @@
+# Blender 4.4.0 MTL File: 'Rockhard Abs.blend'
+# www.blender.org
+
+newmtl Flag
+Ns 22.157801
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd manface.png
+
+newmtl Flag_Pole
+Ns 250.000000
+Ka 0.148355 0.148355 0.148355
+Kd 0.148355 0.148355 0.148355
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+
+newmtl gray_rocks
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd rockhard-abs.png
