@@ -90,8 +90,8 @@ class RoundManager {
     CharacterPool[0] = new Character("MermanLowP.obj", new CharacterAspect[] {CharacterAspect.SHY});
     CharacterPool[1] = new Character("ShrromGirl.obj", new CharacterAspect[] {CharacterAspect.NAKED});
     CharacterPool[2] = new Character("models/rockhard-abs/rockhard-abs.obj", new CharacterAspect[] {CharacterAspect.NAKED});
-    CharacterPool[3] = new Character("models/laika/laika.obj", new CharacterAspect[] {CharacterAspect.NAKED});
-    CharacterPool[4] = new Character("CCubeBig.obj", new CharacterAspect[] {CharacterAspect.NAKED});
+    //CharacterPool[3] = new Character("models/laika/laika.obj", new CharacterAspect[] {CharacterAspect.NAKED});
+    CharacterPool[3] = new Character("CCubeBig.obj", new CharacterAspect[] {CharacterAspect.NAKED});
   }
 
   void SetActiveCharacters() {
