@@ -7,6 +7,8 @@ class InventoryManager {
   int InventorySize = 5; //How many available Dialogues per round
 
   InventoryManager() {
+    DialoguePool = new Dialogue[5];
+    AvailableDialogue = new Dialogue[InventorySize];
     DefineAllDialogues();
   }
 
@@ -55,9 +57,22 @@ class InventoryManager {
   }
 
   void SetAvailableDialogue() {
-
     for (int i = 0; i < InventorySize; i++) {
-      AvailableDialogue[i] = DialoguePool[int(random(DialoguePool.length))];
+      int randomIndex = int(random(DialoguePool.length));
+      if (DialoguePool[randomIndex] != null) { // ✅ Check that the dialogue exists before assigning
+        AvailableDialogue[i] = DialoguePool[randomIndex];
+      } else {
+        AvailableDialogue[i] = new Dialogue(DialogueType.COMMENT, new CharacterAspect[]{}, new CharacterAspect[]{}); // ✅ Fallback dialogue
+      }
     }
   }
+
+  String getDialogueType(int index) {
+  if (AvailableDialogue != null && index >= 0 && index < AvailableDialogue.length) {
+    if (AvailableDialogue[index] != null) {
+      return AvailableDialogue[index].Type.name(); // ✅ Safe access
+    }
+  }
+  return "Unknown"; // ✅ Safe fallback
+}
 }

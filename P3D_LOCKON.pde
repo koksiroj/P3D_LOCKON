@@ -12,47 +12,57 @@ PImage TestBoxTxtr;
 float baseSize = 3000;
 float maxSize = 4000;
 
-float[] highlightIntensity = {0, 0, 0, 0}; 
+float[] highlightIntensity = {0, 0, 0, 0};
+
+InventoryManager inventory;
+Button[] buttons = new Button[5];
 
 void setup() {
   size(1280, 720, P3D);
   TestBox = loadShape("CCube.obj");
-  //TestBoxTxtr = loadImage("texture/CCubeTxtr.jpg");
-  //TestBox.setTexture(TestBoxTxtr);
-  //TestBox.setSpecular(0xfffff7d5);
-   centerX = width / 2;
-   centerY = height / 2;
+  TestBox.rotateZ(PI);
+  centerX = width / 2;
+  centerY = height / 2;
+
+  inventory = new InventoryManager();
+  inventory.NewRound();
+  
 }
 
-void draw() { 
+void draw() {
   background(100);
   roundDisplay();
-  if (addAngle > 0){
+  if (addAngle > 0) {
     angle += PI*0.5/90;
     addAngle -= 1;
   }
+
   lights();
   noFill();
-  
+
+  //Centred box
   pushMatrix();
   translate(width / 2, height / 2, 0);
   box(45);
   popMatrix();
+  //~~~~~~~~~
+
   drawCharacters();
   TestBox.rotateY(.01);
+
+  inventoryDisplay();
 }
 
-void turnChange(){
+void turnChange() {
   addAngle = 90;
 }
 
-void roundChange(){
-  
+void roundChange() {
 }
 
 void drawCharacters() {
   float[][] positions = new float[4][2]; // Store (X, Z) coordinates
-  
+
   // Calculate object positions
   for (int i = 0; i < 4; i++) {
     float objAngle = angle + i * HALF_PI;
@@ -63,7 +73,7 @@ void drawCharacters() {
   // Find the closest object (smallest Z value)
   int closestIndex = 0;
   float minZ = positions[0][1];
-  
+
   for (int i = 1; i < 4; i++) {
     if (positions[i][1] > minZ) { // Smaller Z means closer to the camera //Swapped the '<' for a '>'
       minZ = positions[i][1];
@@ -82,7 +92,7 @@ void drawCharacters() {
 
   // Draw objects with smooth effects
   color[] colors = {#ff0000, #00ff00, #0000ff, #ff00ff};
-  
+
   for (int i = 0; i < 4; i++) {
     pushMatrix();
     translate(positions[i][0], centerY, positions[i][1]);
@@ -103,21 +113,40 @@ void drawCharacters() {
     popMatrix();
   }
 }
-void mouseClicked(){
-  if (turn < 4){
+
+void mouseClicked() {
+  if (turn < 4) {
     turnChange();
-  }else{
+  } else {
     round += 1;
     roundChange();
     turn = 1;
   }
 }
 
-void roundDisplay(){
+void mousePressed() {
+  for (int i = 0; i < 5; i++) {
+    if (buttons[i].isClicked(mouseX, mouseY)) {
+      println("Selected Dialogue: " + inventory.getDialogueType(i));
+    }
+  }
+}
+
+void roundDisplay() {
   pushMatrix();
   String roundS = "Round:" + round;
   textSize(64);
   fill(255);
-  text(roundS, 20,40);
+  text(roundS, 20, 40);
   popMatrix();
+}
+
+void inventoryDisplay() {
+    for (int i = 0; i < 5; i++) {
+    buttons[i] = new Button(100, 100 + i * 60, 200, 50); // Adjust positions as needed
+  }
+  
+  for (int i = 0; i < 5; i++) {
+    buttons[i].display(inventory.getDialogueType(i)); // Display the dialogue name
+  }
 }
