@@ -1,0 +1,66 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Processing
+        run: |
+          wget https://github.com/processing/processing4/releases/download/processing-1293-4.3/processing-4.3-linux-x64.tgz
+          tar xf *.tgz
+          echo "$(pwd)/processing-4.3/" >> $GITHUB_PATH
+      - name: Download Sound Library
+        run: |
+          mkdir -p $HOME/ProcessingSketchbook/libraries/
+          mkdir -p $HOME/.config/processing/
+          echo "sketchbook.path.four=$HOME/ProcessingSketchbook" > $HOME/.config/processing/preferences.txt
+          wget https://github.com/processing/processing-sound/releases/download/v2.4.0/sound.zip
+          7z x sound.zip
+          mv sound $HOME/ProcessingSketchbook/libraries/
+      - name: Export
+        # The processing-java prefers absolute paths on Windows.
+        run: processing-java --sketch="${{ github.workspace }}" --output="${{ github.workspace }}/out" --force --export
+      - name: Linux workaround for permissions
+        # Zipping up the project clears the executable bit on the java binary, so make the startup script enable it again.
+        #  https://github.com/actions/upload-artifact?tab=readme-ov-file#permission-loss
+        run: sed -i '5i chmod +x $APPDIR/java/bin/java' out/${{ github.event.repository.name }}
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ github.event.repository.name }}(${{ runner.os }})"
+          path: |
+            ./out/
+            !./out/source/
+  build-windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Processing
+        run: |
+          Invoke-WebRequest https://github.com/processing/processing4/releases/download/processing-1293-4.3/processing-4.3-windows-x64.zip -OutFile processing.zip
+          7z x processing.zip
+          echo "$((Get-Item .).FullName)/processing-4.3" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Download Sound Library
+        run: |
+          mkdir $HOME/ProcessingSketchbook/libraries/
+          mkdir $HOME/AppData/Roaming/Processing/
+          echo "sketchbook.path.four=$HOME/ProcessingSketchbook" > $HOME/AppData/Roaming/Processing/preferences.txt
+          Invoke-WebRequest https://github.com/processing/processing-sound/releases/download/latest/sound.zip -OutFile sound.zip
+          7z x sound.zip
+          mv sound $HOME/ProcessingSketchbook/libraries/
+      - name: Export
+        # The processing-java prefers absolute paths on Windows.
+        run: processing-java --sketch="${{ github.workspace }}" --output="${{ github.workspace }}/out" --force --export
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ github.event.repository.name }}(${{ runner.os }})"
+          path: |
+            ./out/
+            !./out/source/
