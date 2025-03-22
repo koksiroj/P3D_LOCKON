@@ -9,3 +9,6 @@ application.windows64
 application.macosx
 out
 *.autosave
+
+#Krita temporary/backup files
+*.*~

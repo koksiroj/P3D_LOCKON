@@ -4,6 +4,8 @@ enum CharacterAspect {
 
 class Character {
 
+  PShape CharacterModel;
+
   CharacterAspect[] Aspects;
 
   int Trust = 0;
@@ -15,17 +17,22 @@ class Character {
   private int _baseAffection = 0;
 
   //Overload for when all stats just start at 0
-  Character(CharacterAspect[] pAspects) {
+  Character(String pModelName, CharacterAspect[] pAspects) {
+    CharacterModel = loadShape(pModelName);
+    CharacterModel.rotateZ(PI);
     Aspects = pAspects;
   }
 
-  Character(CharacterAspect[] pAspects, int pTrust, int pPatience, int pAffection) {
+  Character(String pModelName, CharacterAspect[] pAspects, int pTrust, int pPatience, int pAffection) {
+    CharacterModel = loadShape(pModelName);
+    CharacterModel.rotateZ(PI);
+
     Aspects = pAspects;
 
     _baseTrust = pTrust;
     _basePatience = pPatience;
     _baseAffection = pAffection;
-    
+
     Reset();
   }
 
@@ -39,7 +46,7 @@ class Character {
     return false;
   }
 
-  void Reset() {    
+  void Reset() {
     Trust = _baseTrust;
     Patience = _basePatience;
     Affection = _baseAffection;
