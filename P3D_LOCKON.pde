@@ -1,4 +1,5 @@
 int round = 1;
+int turn = 1;
 float angle;
 float centerX, centerY;
 float speed = 0.05;
@@ -39,8 +40,12 @@ void draw() {
   TestBox.rotateY(.01);
 }
 
-void roundChange(){
+void turnChange(){
   addAngle = 90;
+}
+
+void roundChange(){
+  
 }
 
 void drawCharacters() {
@@ -58,7 +63,7 @@ void drawCharacters() {
   float minZ = positions[0][1];
   
   for (int i = 1; i < 4; i++) {
-    if (positions[i][1] < minZ) { // Smaller Z means closer to the camera
+    if (positions[i][1] > minZ) { // Smaller Z means closer to the camera //Swapped the '<' for a '>'
       minZ = positions[i][1];
       closestIndex = i;
     }
@@ -97,7 +102,13 @@ void drawCharacters() {
   }
 }
 void mouseClicked(){
-  roundChange();
+  if (turn < 4){
+    turnChange();
+  }else{
+    round += 1;
+    roundChange();
+    turn = 1;
+  }
 }
 
 void roundDisplay(){
