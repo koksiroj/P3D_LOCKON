@@ -27,6 +27,10 @@ void setup() {
 
   inventory = new InventoryManager();
   inventory.NewRound();
+
+  for (int i = 0; i < 5; i++) {
+    buttons[i] = new Button(width/2 - 220*2.5 + i * 240, height*0.78, 220, 50);
+  }
 }
 
 void draw() {
@@ -59,16 +63,29 @@ void draw() {
 }
 
 void mousePressed() {
-  boolean clickedButton = false;
-  for (int i = 0; i < 5; i++) {
-    if (buttons[i].isClicked(mouseX, mouseY)) {
-      clickedButton = true;
-      //println("Selected Dialogue: " + inventory.getDialogueType(i));
-      roundManager.PickDialogue(inventory.AvailableDialogue[i]);
+
+  if (roundManager.AddAngle <= 0) {
+    boolean clickedButton = false;
+    boolean disabled = false;
+
+    for (int i = 0; i < 5; i++) {
+      if (buttons[i].isClicked(mouseX, mouseY)) {
+        if (!buttons[i].CanInteract) { 
+          disabled = true;
+          //println("this button is disabled");
+        } else {
+          clickedButton = true;
+          //println("Selected Dialogue: " + inventory.getDialogueType(i));
+          roundManager.PickDialogue(inventory.AvailableDialogue[i]);
+          if (roundManager.TurnCount != 1) {//Hardcoded turncount check
+            buttons[i].CanInteract = false;
+          }
+        }
+      }
     }
-  }
-  if (!clickedButton && roundManager.AddAngle <= 0) {
-    roundManager.ProgressTurn();
+    if (!clickedButton && !disabled) {
+      roundManager.ProgressTurn();
+    }
   }
 }
 
@@ -83,12 +100,15 @@ void roundDisplay() {
 
 void inventoryDisplay() {
   for (int i = 0; i < 5; i++) {
-    buttons[i] = new Button(width/2 - 160*2.5 + i * 160, height*0.78, 150, 50);
-  }
-  for (int i = 0; i < 5; i++) {
     String labelRaw = inventory.getDialogueType(i);
     String labelProc = labelRaw.replace("_", " ");
     buttons[i].display(labelProc);
+  }
+}
+
+void ResetButtonDisplay() {
+  for (int i = 0; i < 5; i++) {
+    buttons[i].CanInteract = true;
   }
 }
 

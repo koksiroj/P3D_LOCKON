@@ -86,6 +86,8 @@ class RoundManager {
     AddAngle = 60;
     Zoom = true;
     println("Round:" + RoundCount);
+    inventory.ReRollDialogue();
+    ResetButtonDisplay();
     //TODO: ProgressRound
   }
 

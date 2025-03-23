@@ -1,6 +1,8 @@
 class Button {
   float x, y, w, h;
 
+  Boolean CanInteract = true;
+
   Button(float px, float py, float pw, float ph) {
     x = px;
     y = py;
@@ -11,8 +13,13 @@ class Button {
   void display(String label) {
     pushMatrix();
     textSize(16);
-    fill(#F5EBFF);
-    stroke(#E3D4F9);
+    if (CanInteract) {
+      fill(#F5EBFF);
+      stroke(#E3D4F9);
+    } else {
+      fill(#A9A3AF);
+      stroke(#9F94B2);
+    }
     strokeWeight(2);
     rect(x, y, w, h, 8);
     fill(0);
