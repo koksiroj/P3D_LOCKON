@@ -41,7 +41,13 @@ class RoundManager {
 
     for (int i = 0; i < pDialogue.Aspects.length; i++) {
       if (ActiveCharacters[CurrentCharacter].HasAspect(pDialogue.Aspects[i])) {
-        ActiveCharacters[CurrentCharacter].Affection += pDialogue.EffectValues[i];
+
+        if (pDialogue.IsBallsy && ActiveCharacters[CurrentCharacter].Affection < ActiveCharacters[CurrentCharacter].Trust) {
+        } else {
+          ActiveCharacters[CurrentCharacter].Affection += pDialogue.EffectValues[i];
+        }
+
+
         affected = true;
         println("got affected by: "+ pDialogue.Aspects[i] +", affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
       }
@@ -107,7 +113,6 @@ class RoundManager {
     if (AddAngle > 0) {
       if (roundManager.Zoom) {
         Angle += HALF_PI*5/60;
-        println("called");
       } else {
         Angle += HALF_PI/90;
       }
