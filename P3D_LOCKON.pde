@@ -19,8 +19,11 @@ RoundManager roundManager;
 InventoryManager inventory;
 Button[] buttons = new Button[5];
 
-void setup() {
+int AffectionBarCharacter = 0;
+
+void setup() {  
   size(1280, 720, P3D);
+  frameRate(60);
 
   CirceBold = createFont("CirceRounded-Bold.otf", 64);
   textFont(CirceBold);
@@ -82,7 +85,7 @@ void mousePressed() {
 
     for (int i = 0; i < 5; i++) {
       if (buttons[i].isClicked(mouseX, mouseY)) {
-        if (!buttons[i].CanInteract) { 
+        if (!buttons[i].CanInteract) {
           disabled = true;
           //println("this button is disabled");
         } else {
@@ -126,10 +129,14 @@ void ResetButtonDisplay() {
 
 void statsDisplay() {
   //Affection bar
+
   pushMatrix();
   int affectionC = 5;
   int trustC = 3;
-  int currentAffection = roundManager.GetCurrentCharacter().Affection;
+  if(roundManager.AddAngle <= 0){
+    AffectionBarCharacter = roundManager.CurrentCharacter;
+  }
+  int currentAffection = roundManager.ActiveCharacters[AffectionBarCharacter].Affection;  
   translate(width/2 - 100*(affectionC + trustC)/2, height*0.865);
 
   for (int i = 0; i < affectionC + trustC; i++) {

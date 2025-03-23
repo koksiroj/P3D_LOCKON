@@ -96,12 +96,15 @@ class RoundManager {
       Zoom = false;
     }
 
+    if (CurrentCharacter >= ActiveCharacterCount)
+      CurrentCharacter -= (ActiveCharacterCount-1);
+
     println("Turn:" + TurnCount);
   }
 
   void NextRound() {
     RoundCount++;
-    CurrentCharacter = 0;
+    CurrentCharacter++;
     TurnCount = 1;
     AddAngle = 60;
     Zoom = true;
@@ -134,9 +137,9 @@ class RoundManager {
     hint(ENABLE_DEPTH_TEST);
     if (AddAngle > 0) {
       if (roundManager.Zoom) {
-        Angle += HALF_PI*5/60;
+        Angle += (HALF_PI*5/60)*(60/frameRate);
       } else {
-        Angle += HALF_PI/90;
+        Angle += HALF_PI/90*(60/frameRate);
       }
       AddAngle -= 1;
     }
@@ -191,7 +194,7 @@ class RoundManager {
 
       shape(ActiveCharacters[i].CharacterModel, 0, 0);
       popMatrix();
-      ActiveCharacters[i].CharacterModel.rotateY(.01);
+      ActiveCharacters[i].CharacterModel.rotateY(.01*(60/frameRate));
     }
     hint(DISABLE_DEPTH_TEST);
   }
