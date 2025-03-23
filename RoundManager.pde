@@ -36,6 +36,7 @@ class RoundManager {
   void PickDialogue(Dialogue pDialogue) {
 
     boolean affected = false;
+    int affectionGain =0;
 
     println("Affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
 
@@ -43,20 +44,26 @@ class RoundManager {
       if (ActiveCharacters[CurrentCharacter].HasAspect(pDialogue.Aspects[i])) {
 
         if (pDialogue.IsBallsy && ActiveCharacters[CurrentCharacter].Affection < ActiveCharacters[CurrentCharacter].Trust) {
+          audioPlay(false);
         } else {
           ActiveCharacters[CurrentCharacter].Affection += pDialogue.EffectValues[i];
+          affectionGain += pDialogue.EffectValues[i];
         }
-
 
         affected = true;
         println("got affected by: "+ pDialogue.Aspects[i] +", affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
       }
     }
-
+    
+    
+    
     if (!affected) {
       ActiveCharacters[CurrentCharacter].Affection += pDialogue.NeutralEffect;
+      affectionGain += pDialogue.NeutralEffect;
       //println("not affected, affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
     }
+    
+    if (affectionGain > 0){audioPlay(true);}else{audioPlay(false);}
 
     ProgressTurn();
   }

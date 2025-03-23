@@ -1,3 +1,8 @@
+import processing.sound.*;
+SoundFile audpos;
+SoundFile audneg;
+SoundFile ost;
+
 float centerX, centerY;
 float radius = 100;
 
@@ -30,7 +35,14 @@ void setup() {
 
   for (int i = 0; i < 5; i++) {
     buttons[i] = new Button(width/2 - 220*2.5 + i * 240, height*0.78, 220, 50);
-  }
+  };
+
+  
+  audpos = new SoundFile(this, "sfx/accepted_sfx.wav");
+  audneg = new SoundFile(this, "sfx/rejected_sfx.wav");
+  ost = new SoundFile(this, "sfx/gamejamxp_2025_revert_Vmix.mp3");
+  ost.amp(0.5);
+  ost.loop();
 }
 
 void draw() {
@@ -143,17 +155,9 @@ void statsDisplay() {
     endShape();
     popMatrix();
   }
-
-  /*fill(#93527F);
-   rect(0,0,
-   fill(#F5EBFF);
-   rect(0, 0, 600, 60, 30);
-   noFill();
-   stroke(#9680C1);
-   strokeWeight(12);
-   rect(0, 0, 600, 60, 30);
-   stroke(#A791C9);
-   strokeWeight(8);
-   rect(0, 0, 600, 60, 30);*/
   popMatrix();
+}
+
+void audioPlay(boolean pog){
+  if (pog){audpos.play();}else{audneg.play();}
 }
