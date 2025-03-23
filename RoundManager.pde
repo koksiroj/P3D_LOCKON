@@ -9,6 +9,8 @@ class RoundManager {
   int CurrentCharacter = 0;
   int ActiveCharacterCount = 4;
 
+  String CCubeModel = "CCubeBig.obj";
+
   float Angle;
   float AddAngle;
 
@@ -32,11 +34,18 @@ class RoundManager {
     SetActiveCharacters();
   }
 
-
+  void CCubeSwap(boolean openUp) {
+    if (openUp) {
+      CCubeModel = "CCubeBig.obj";
+    } else {
+      CCubeModel = "CCubeBig.obj";
+    }
+  }
+  
   void PickDialogue(Dialogue pDialogue) {
 
     boolean affected = false;
-    int affectionGain =0;
+    int affectionGain = 0;
 
     println("Affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
 
@@ -54,16 +63,20 @@ class RoundManager {
         println("got affected by: "+ pDialogue.Aspects[i] +", affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
       }
     }
-    
-    
-    
+
+
+
     if (!affected) {
       ActiveCharacters[CurrentCharacter].Affection += pDialogue.NeutralEffect;
       affectionGain += pDialogue.NeutralEffect;
       //println("not affected, affection is:"+ ActiveCharacters[CurrentCharacter].Affection);
     }
-    
-    if (affectionGain > 0){audioPlay(true);}else{audioPlay(false);}
+
+    if (affectionGain > 0) {
+      audioPlay(true);
+    } else {
+      audioPlay(false);
+    }
 
     ProgressTurn();
   }
@@ -106,7 +119,7 @@ class RoundManager {
     CharacterPool[1] = new Character("ShrromGirl.obj", new CharacterAspect[] {CharacterAspect.NAKED, CharacterAspect.FASHIONABLE});
     CharacterPool[2] = new Character("models/rockhard-abs/rockhard-abs.obj", new CharacterAspect[] {CharacterAspect.NAKED, CharacterAspect.FIT});
     //CharacterPool[3] = new Character("models/laika/laika.obj", new CharacterAspect[] {CharacterAspect.NAKED});
-    CharacterPool[3] = new Character("CCubeBig.obj", new CharacterAspect[] {CharacterAspect.NAKED, CharacterAspect.SHY, CharacterAspect.FASHIONABLE});
+    CharacterPool[3] = new Character(CCubeModel, new CharacterAspect[] {CharacterAspect.NAKED, CharacterAspect.SHY, CharacterAspect.FASHIONABLE});
   }
 
   void SetActiveCharacters() {
