@@ -137,9 +137,9 @@ class RoundManager {
     hint(ENABLE_DEPTH_TEST);
     if (AddAngle > 0) {
       if (roundManager.Zoom) {
-        Angle += (HALF_PI*5/60)*(60/frameRate);
+        Angle += HALF_PI*5/60;
       } else {
-        Angle += HALF_PI/90*(60/frameRate);
+        Angle += HALF_PI/90;
       }
       AddAngle -= 1;
     }
