@@ -15,7 +15,7 @@ InventoryManager inventory;
 Button[] buttons = new Button[5];
 
 void setup() {
-  size(800, 800, P3D);
+  size(1280, 720, P3D);
 
   CirceBold = createFont("CirceRounded-Bold.otf", 64);
   textFont(CirceBold);
@@ -86,7 +86,9 @@ void inventoryDisplay() {
     buttons[i] = new Button(width/2 - 160*2.5 + i * 160, height*0.78, 150, 50);
   }
   for (int i = 0; i < 5; i++) {
-    buttons[i].display(inventory.getDialogueType(i));
+    String labelRaw = inventory.getDialogueType(i);
+    String labelProc = labelRaw.replace("_", " ");
+    buttons[i].display(labelProc);
   }
 }
 
